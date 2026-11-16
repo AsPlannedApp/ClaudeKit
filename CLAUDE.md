@@ -30,48 +30,17 @@ Each sub-repo has its own `CLAUDE.md` with repo-specific detail, and an `ARCHITE
 
 ## Verification & Working Discipline
 
-These rules exist because of a concrete failure: a session ran a large multi-phase
-implementation, spot-tested pieces of it shallowly, and reported "DONE, all phases verified" —
-the user's own follow-up check found several real problems, including at least one direct
-regression, that the session's testing had missed or explained away. Apply these on every task:
-
-- **Verify the whole element, not just the property you changed.** After any CSS/markup edit to
-  an interactive element, check its full computed style against the reference — cursor, padding,
-  border, every box-model property — not only the one thing the fix targeted. Narrow, confirmation-
-  biased checking (looking only for what you already expect to be true) is how a modal ends up
-  with the wrong padding or a button loses `cursor: pointer` while the one property you were
-  chasing looks fine.
-- **An error hit during your own testing is a bug lead, not friction to route around.** A 422, a
-  console error, an unexpected redirect, a state that "shouldn't happen" — stop and determine
-  whether it's real before treating it as a test-setup annoyance and continuing past it. Silently
-  working around your own error is how you end up with direct evidence of a bug in hand and never
-  report it.
-- **State exactly what you tested; never generalize a narrow check into a broad status.** "DONE,
-  verified" must mean every stated scope item was actually exercised, not that the phases you
-  wrote a plan around were implemented and a few of them spot-checked. If a path wasn't tested
-  (an edit-existing-item flow, an error branch, a disabled/paused state), say so explicitly rather
-  than letting a confident summary cover it by omission.
-- **"Use/reuse the same X" means copy X's literal values, not rebuild something similar from
-  memory.** When told to reuse an existing shell, pattern, or component's look, pull its actual
-  props/CSS values (size, padding, header markup) rather than approximating them.
-- **No scope growth mid-task without a checkpoint.** A new UI pattern, an extra cleanup, a
-  differently-sized element, an additional "while I'm here" fix — even a well-reasoned one — needs
-  to be surfaced to the user, not silently folded into an already-approved plan.
-- **When told to read a specific file or reference a specific part of one, actually read it and
-  check your work against exactly what was asked** — a referenced section, paragraph, or element
-  inside a Markdown/HTML/design doc. Do not rely on a skim or an earlier summary and assume the
-  detail was covered. For a large file, read it in chunks methodically, or ask which section
-  matters, rather than silently missing content the user explicitly pointed at.
+Behaviour rules (verification, primary sources, scope, fix-the-class, voice, git safety) live in
+the user-level voice layer, installed from this kit's `voice/` to `~/.claude/voice/`. Apply them on
+every task; `~/.claude/voice/02-working-discipline.md` has the full list with the reason for each rule.
 
 ---
 
 ## Basic Knowledgebase
 
-- Before starting a task/plan, review existing rules and hypotheses for that domain (`claude-memory/knowledge/<domain>/`). Apply rules by default; check if a hypothesis can be tested with today's work.
-- At the end of each task, extract insights into the domain folder: `knowledge.md` (facts/patterns), `hypotheses.md` (needs more data), `rules.md` (confirmed — apply by default). Create the folder if it doesn't exist. If a domain's `rules.md` grows past ~500 lines, split it into topic sub-files (`rules-<topic>.md`) with `rules.md` reduced to a routing index — preserve rule numbers absolute across the split.
-- Promote a hypothesis to a rule after 3+ confirmations; demote a rule back to hypothesis if later contradicted.
-- Keep `claude-memory/knowledge/INDEX.md` routing to every domain folder.
-- Every plan's last step should update the knowledgebase, unless told not to.
+Use the per-domain knowledge base in `claude-memory/knowledge/<domain>/` (`knowledge.md`,
+`hypotheses.md`, `rules.md`, routed by `claude-memory/knowledge/INDEX.md`): read the domain's rules
+before a task, write lessons back at the end. Lifecycle and promotion rules: `~/.claude/voice/04-memory-and-knowledge.md`.
 
 ---
 
@@ -88,13 +57,15 @@ Trigger points by codebase:
 
 ---
 
-## Codex product-owner gate
+## Independent product-owner review
 
-If the workspace uses a second agent (e.g. Codex) as an independent product-owner / code-quality
-gate, before declaring any **larger** multi-repository implementation complete (new feature,
-multi-file implementation, design-facing change), run the `codex-po-gate` skill — it holds the
-review script, the ≤2,000-char What-asked/Plan/Implementation brief format, the focused
-single-repo command, and the visual-fidelity gate. **Small, scoped fixes skip it** (lint/tests
+Before declaring any **larger** multi-repository implementation complete (new feature,
+multi-file implementation, design-facing change), run an independent product-owner /
+code-quality review with `/po-review-codex` or `/po-review-claude`, whichever the user prefers.
+Both launch `claude-memory/scripts/codex-po-review.sh` and follow `claude-memory/scripts/PO-REVIEW.md`
+(the ≤2,000-char What-asked/Plan/Implementation brief, invariant audit, rounds, visual-fidelity
+gate); the rules and reasons are in `~/.claude/voice/05-review-loop.md`. The preferred reviewer
+falls back once to the other on quota, login failure or a missing CLI. **Small, scoped fixes skip it** (lint/tests
 green is enough). For a large change, ask the user to confirm the plan before running the gate —
 do not self-classify a large change as "small".
 
