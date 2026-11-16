@@ -36,6 +36,8 @@ without re-reading it, and without trusting it more than the evidence allows.**
 ## 2. The shape of an end-of-task report
 
 Use this order every time. Leave out sections that would be empty, but never reorder them.
+This order wins over any report layout a built-in command, skill or tool template suggests:
+keep their content, drop their headings.
 
 1. **Outcome first, in 1–2 sentences:** what's done and its state. Always include what is *not*
    committed, pushed or deployed, and anything that's still running old code.
