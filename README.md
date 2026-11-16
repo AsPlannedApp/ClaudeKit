@@ -1,4 +1,4 @@
-# Claude
+# ClaudeKit
 
 A reusable Claude Code setup in two layers:
 
@@ -45,16 +45,16 @@ needed for the fallback; `--fallback off` disables it). Rules: `voice/05-review-
    ```bash
    mkdir -p ~/.claude/voice
    [ -e ~/.claude/CLAUDE.md ] && cp -n ~/.claude/CLAUDE.md ~/.claude/CLAUDE.md.bak.$(date +%Y%m%d%H%M%S)
-   cp -n Claude/voice/0*.md ~/.claude/voice/
-   cp -n Claude/voice/CLAUDE.md ~/.claude/CLAUDE.md   # skipped if it exists: merge by hand
+   cp -n ClaudeKit/voice/0*.md ~/.claude/voice/
+   cp -n ClaudeKit/voice/CLAUDE.md ~/.claude/CLAUDE.md   # skipped if it exists: merge by hand
    ```
 
    **Project level (one project only).** Keep the kit in its own folder so the project's
    `CLAUDE.md` stays free to be generated or edited:
    ```bash
    mkdir -p <project>/.claude/voice
-   cp -n Claude/voice/0*.md <project>/.claude/voice/
-   cp -n Claude/voice/CLAUDE.md <project>/.claude/voice/core.md
+   cp -n ClaudeKit/voice/0*.md <project>/.claude/voice/
+   cp -n ClaudeKit/voice/CLAUDE.md <project>/.claude/voice/core.md
    ```
    In `core.md`, swap the five `@~/.claude/voice/…` lines for the commented `@./0…` block below
    them. Then add **one line** to the top of the project's own `CLAUDE.md` (create it if
@@ -78,11 +78,11 @@ change those pointers to `.claude/voice/`.
 
 ### Set up the workspace layer
 
-1. Copy this `Claude/` folder to the root of your multi-repo workspace, alongside your other repos
-   (e.g. `my-workspace/Claude/`, `my-workspace/public-app/`, `my-workspace/backend-php/`, …).
+1. Copy this `ClaudeKit/` folder to the root of your multi-repo workspace, alongside your other repos
+   (e.g. `my-workspace/ClaudeKit/`, `my-workspace/public-app/`, `my-workspace/backend-php/`, …).
 2. Symlink `CLAUDE.md` to the workspace root so Claude Code picks it up automatically:
    ```bash
-   [ -e CLAUDE.md ] || ln -s Claude/CLAUDE.md CLAUDE.md   # an existing CLAUDE.md: merge by hand
+   [ -e CLAUDE.md ] || ln -s ClaudeKit/CLAUDE.md CLAUDE.md   # an existing CLAUDE.md: merge by hand
    ```
 3. Edit `CLAUDE.md`: replace the repo table, tech stack, brand tokens, and external services with
    your actual project's details. Search for `{{...}}` placeholders in the Design System section.
