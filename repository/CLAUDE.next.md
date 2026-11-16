@@ -163,7 +163,9 @@ auth, and error formatting — keep that logic in one place, not duplicated per 
 
 <!-- {{RATE_LIMIT_LOCATION}}: e.g. "proxy.ts (repo root, Node runtime) rate-limits
      /api/v1/auth/* by client IP before the route runs." -->
-{{RATE_LIMIT_LOCATION}}. Follows the workspace `CLAUDE.md`'s "Rate limiting" section: env-var
+{{RATE_LIMIT_LOCATION}}. <!-- Keep the next sentence's pointer only if the workspace CLAUDE.md really has a
+     "Rate limiting" section; otherwise state the conventions below as this repo's own. -->
+Follows the workspace `CLAUDE.md`'s "Rate limiting" section: env-var
 thresholds (`RL_*`), a global multiplier + on/off switch, an `X-RateLimit-Bypass` secret
 honoured only in non-prod, the standard 429 error envelope + `Retry-After`/`X-RateLimit-*`,
 **fail open** on limiter/store failure for auth endpoints, and debounced fire-and-forget

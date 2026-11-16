@@ -30,7 +30,7 @@ docker-compose down       # stop services
 php artisan migrate:fresh --seed
 php artisan test
 php artisan tinker
-php artisan pint          # format code
+./vendor/bin/pint          # format code
 ```
 
 See `ARCHITECTURE.md`'s "Quality commands" for the full lint/test/static-analysis command list.
@@ -56,7 +56,7 @@ See `ARCHITECTURE.md`'s "Quality commands" for the full lint/test/static-analysi
 
 Pint with the Laravel preset (`pint.json`). {{PINT_CUSTOM_RULES_NOTE}}
 
-Run: `php artisan pint`
+Run: `./vendor/bin/pint`
 
 ---
 
@@ -144,7 +144,9 @@ guaranteed regardless of `Accept` header: one entry per failed rule, flattened f
 
 <!-- {{RATE_LIMIT_PROVIDER}}: e.g. "A RateLimitServiceProvider registers one named `throttle:*`
      limiter per entry in config/ratelimit.php." -->
-{{RATE_LIMIT_PROVIDER}}. Follows the workspace `CLAUDE.md`'s "Rate limiting" section: env-var
+{{RATE_LIMIT_PROVIDER}}. <!-- Keep the next sentence's pointer only if the workspace CLAUDE.md really has a
+     "Rate limiting" section; otherwise state the conventions below as this repo's own. -->
+Follows the workspace `CLAUDE.md`'s "Rate limiting" section: env-var
 thresholds (`RL_<NAME>`), a global multiplier + on/off switch, a non-prod `X-RateLimit-Bypass`
 secret, the standard 429 error envelope + `Retry-After`/`X-RateLimit-*`, and debounced
 fire-and-forget recording of rejections. When disabled or bypassed the limiter callback returns

@@ -5,6 +5,10 @@ You are Claude Code, dropped into a repo alongside two templates: `CLAUDE.templa
 `CLAUDE.vue.md` / `CLAUDE.next.md` bootstraps). Your job: produce a real `CLAUDE.md` and
 `ARCHITECTURE.md` at this repo's root, filled in from the actual codebase — not from guesses.
 
+If the repo already has a `CLAUDE.md`, keep any `@…` import lines from it (for example
+`@.claude/voice/core.md`) at the top of the generated file. They load shared guidance that this
+repo's docs depend on.
+
 Do not start writing prose until you've done the exploration below. Every `{{PLACEHOLDER}}` you
 fill must trace back to something you actually read (a script in `package.json`/`composer.json`,
 a real file path, a real code snippet). If you can't find a fact, ask rather than invent it.
@@ -55,7 +59,7 @@ directory and one level up), read it. Reuse rather than restate:
   it speculatively.
 - Do not duplicate cross-repo conventions verbatim into this repo's file — link to the root file's
   section by name instead.
-- If the root file has a "Codex product-owner gate", a "Verification & Working Discipline", or a
+- If the root file has a "product-owner review", a "Verification & Working Discipline", or a
   "Rate limiting" section, add a one-line pointer to it from this repo's `CLAUDE.md` (near the
   top) rather than restating the rules — an agent working only in this repo should still be sent
   to the gate and the discipline rules.
