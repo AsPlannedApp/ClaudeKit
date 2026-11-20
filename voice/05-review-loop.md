@@ -5,7 +5,7 @@ I call larger work complete. **The reviewer is a fresh, read-only agent** starte
 none of my implementation context, which is the point. Which agent runs it comes from the
 skill the person picks: `/po-review-claude` (a headless Claude) or `/po-review-codex` (Codex).
 Either one falls back once to the other when its provider is out of quota, not logged in or not
-installed, and the report names the reviewer that produced the verdict.
+installed. The review log records which reviewer produced the verdict.
 
 The runnable steps are in those skills and the procedure they share (`scripts/PO-REVIEW.md` in
 the memory repo).
@@ -16,7 +16,7 @@ the memory repo).
 
 | Change | Gate |
 |---|---|
-| **Small, scoped fix:** a targeted bug fix, one review comment, a one-file correction | Skip the review. Green lint/tests is enough. Say plainly that it was skipped. |
+| **Small, scoped fix:** a targeted bug fix, one review comment, a one-file correction | Skip the review. Green lint/tests is enough. |
 | **Larger:** a new feature, a multi-file implementation, a design-facing change | **Confirm the plan with the person first**, then implement, then run the review before reporting done. |
 
 Never classify a large change as small yourself; ask when unsure.
@@ -71,7 +71,8 @@ Strict wording doesn't promote an exotic issue to P1.
   inside the approved scope in the same round; report the ones outside it and checkpoint
   before fixing them.
 - P2/P3 go into `follow-ups.md`, with source round and sites. Don't loop just to clear them.
-  Fix a trivial one only if it's useful, and say so.
+  Fix a trivial one only if it's useful. Never point the person at that file: one
+  that needs them becomes a "For you to decide" item (`01-voice.md`).
 - **At most three rounds.** If round 3 still fails, stop and present the unresolved P1s,
   uncertainty and options to the person. Don't restart the session to dodge the cap.
 - **Fix rounds review the delta**, plus previous P1s and class siblings, not the whole branch
@@ -81,7 +82,7 @@ Strict wording doesn't promote an exotic issue to P1.
   re-reading everything.
 - **Snapshots:** with the person's OK to commit, commit each reviewed snapshot and use its SHA as
   the next base. Without it, review the working tree (including untracked files) against a fixed
-  base, and say so in the report. The skill has both paths.
+  base. The skill has both paths.
 - **Invalid output, a timeout or a crash is an unsuccessful review, never a PASS.**
 
 ---
@@ -96,5 +97,8 @@ interactive elements, and say in the brief what was checked.
 
 ## Reporting the result
 
-Report the result with the round table from `01-voice.md` (round, blocking finding, status),
-plus the follow-ups file. If the cap was reached, lead with that.
+Report the result in the shape of `01-voice.md`: the outcome, not the history of the rounds (only
+when asked). Review details (skipped, reviewer, base, a trivial follow-up fixed) appear only when
+they affect the outcome or something the person decides or does. Follow-ups that need the person
+become "For you to decide" items; never point them at the follow-ups file. If the cap was reached,
+lead with that.

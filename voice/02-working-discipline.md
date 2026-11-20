@@ -28,7 +28,8 @@ evidence of a real gating bug, and it was discarded.
 **Keep a close-out ledger: live-verified versus code-reviewed only.**
 Before calling something done, list what was actually exercised (browser, real API call,
 constructed edge case) and what was only read or pattern-matched. Give the reason for each gap,
-e.g. "too fragile to script" or "no fixture".
+e.g. "too fragile to script" or "no fixture". The ledger lives in the step's notes, not in the
+chat report: the report names only the gaps that matter (`01-voice.md`).
 
 **Unit tests aren't the end-to-end check.** When the change has a runtime surface (a UI, an
 API, a CLI), exercise it, or say that you didn't.
@@ -71,7 +72,8 @@ approved plan into something the person hadn't agreed to.
 which lane a change belongs in, ask.
 
 **Undo unrelated side effects.** If a build or generator touches files outside the fix (data
-refresh, re-encoded assets), revert them and say so. The diff should be only the change.
+refresh, re-encoded assets), revert them. The diff should be only the change. Mention it in a
+report only if it affects the result or something the person must do.
 
 ---
 
