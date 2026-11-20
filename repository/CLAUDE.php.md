@@ -70,7 +70,8 @@ Seeder order (`DatabaseSeeder.php`):
 {{SEEDER_ORDER}}
 ```
 
-{{SEEDER_ORDER_NOTE}} <!-- e.g. "X must run before Y because Y derives rows via INSERT…SELECT from X" -->
+{{SEEDER_ORDER_NOTE}} <!-- e.g. "X must run before Y because Y derives rows via INSERT…SELECT from
+X" -->
 
 ---
 
@@ -143,14 +144,13 @@ guaranteed regardless of `Accept` header: one entry per failed rule, flattened f
 ### Rate limiting
 
 <!-- {{RATE_LIMIT_PROVIDER}}: e.g. "A RateLimitServiceProvider registers one named `throttle:*`
-     limiter per entry in config/ratelimit.php." -->
-{{RATE_LIMIT_PROVIDER}}. <!-- Keep the next sentence's pointer only if the workspace CLAUDE.md really has a
-     "Rate limiting" section; otherwise state the conventions below as this repo's own. -->
-Follows the workspace `CLAUDE.md`'s "Rate limiting" section: env-var
-thresholds (`RL_<NAME>`), a global multiplier + on/off switch, a non-prod `X-RateLimit-Bypass`
-secret, the standard 429 error envelope + `Retry-After`/`X-RateLimit-*`, and debounced
-fire-and-forget recording of rejections. When disabled or bypassed the limiter callback returns
-`Limit::none()`.
+     limiter per entry in config/ratelimit.php." --> {{RATE_LIMIT_PROVIDER}}. <!-- Keep the next
+     sentence's pointer only if the workspace CLAUDE.md really has a "Rate limiting" section;
+     otherwise state the conventions below as this repo's own. --> Follows the workspace
+     `CLAUDE.md`'s "Rate limiting" section: env-var thresholds (`RL_<NAME>`), a global multiplier +
+     on/off switch, a non-prod `X-RateLimit-Bypass` secret, the standard 429 error envelope +
+     `Retry-After`/`X-RateLimit-*`, and debounced fire-and-forget recording of rejections. When
+     disabled or bypassed the limiter callback returns `Limit::none()`.
 
 ---
 

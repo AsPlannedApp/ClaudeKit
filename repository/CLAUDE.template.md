@@ -11,7 +11,8 @@
 
 # CLAUDE.md — {{REPO_NAME}}
 
-{{ONE_LINE_DESCRIPTION}} <!-- e.g. "Next.js 16 marketing site and API backend, deployed to Vercel at example.app." -->
+{{ONE_LINE_DESCRIPTION}} <!-- e.g. "Next.js 16 marketing site and API backend, deployed to Vercel at
+example.app." -->
 
 <!-- OPTIONAL: include if this repo has separate staging/production URLs -->
 **Staging:** `{{STAGING_URL}}` | **Production:** `{{PRODUCTION_URL}}`
@@ -22,7 +23,8 @@
      (e.g. Next.js Pages Router vs App Router, Vue Router history mode, etc.) -->
 ## Router
 
-{{ROUTER_MODE_NOTE}} <!-- state which mode is in use and what NOT to create (e.g. "Do not create files in an app/ directory") -->
+{{ROUTER_MODE_NOTE}} <!-- state which mode is in use and what NOT to create (e.g. "Do not create
+files in an app/ directory") -->
 
 ---
 

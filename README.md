@@ -16,7 +16,7 @@ rules work because they are concrete (good/bad pairs, explicit report shapes, a 
 | Path | What it is | Install it as |
 |---|---|---|
 | `voice/CLAUDE.md` | Compact core: non-negotiables, pointers to the chapters | `~/.claude/CLAUDE.md` |
-| `voice/01-voice.md` | How Claude speaks, reports, explains and hands off | `~/.claude/voice/` |
+| `voice/01-voice.md` | How Claude reports to you: the six-part shape, writing, questions, commands, handoffs | `~/.claude/voice/` |
 | `voice/02-working-discipline.md` | Verification, scope, primary sources, fix-the-class, planning | same |
 | `voice/03-git-shell-safety.md` | Branches, commits, hooks, user commands, secrets, background jobs | same |
 | `voice/04-memory-and-knowledge.md` | Auto-memory format and a per-domain knowledge base | same |
@@ -78,8 +78,9 @@ change those pointers to `.claude/voice/`.
 
 ### Set up the workspace layer
 
-1. Copy this `ClaudeKit/` folder to the root of your multi-repo workspace, alongside your other repos
-   (e.g. `my-workspace/ClaudeKit/`, `my-workspace/public-app/`, `my-workspace/backend-php/`, …).
+1. Copy this `ClaudeKit/` folder to the root of your multi-repo workspace, alongside your other
+   repos (e.g. `my-workspace/ClaudeKit/`, `my-workspace/public-app/`, `my-workspace/backend-php/`,
+   …).
 2. Symlink `CLAUDE.md` to the workspace root so Claude Code picks it up automatically:
    ```bash
    [ -e CLAUDE.md ] || ln -s ClaudeKit/CLAUDE.md CLAUDE.md   # an existing CLAUDE.md: merge by hand
@@ -87,8 +88,8 @@ change those pointers to `.claude/voice/`.
 3. Edit `CLAUDE.md`: replace the repo table, tech stack, brand tokens, and external services with
    your actual project's details. Search for `{{...}}` placeholders in the Design System section.
 4. Point Claude Code at `skills/` (e.g. symlink or copy into `.claude/skills/`) if you want
-   `/api-review`, `/playwright-session`, `/po-review-claude` or `/po-review-codex` available, and adjust their
-   `SKILL.md` content to match your actual endpoints/ports.
+   `/api-review`, `/playwright-session`, `/po-review-claude` or `/po-review-codex` available, and
+   adjust their `SKILL.md` content to match your actual endpoints/ports.
    - Both PO skills run `scripts/codex-po-review.sh` (Python 3.9+), which assumes it sits at
      `<workspace-root>/<memory-repo>/scripts/` (it derives the workspace root as two levels up).
      Copy `scripts/` — including `scripts/logs/.gitignore` — into your memory repo so that holds,
@@ -118,8 +119,8 @@ For each sub-repo that needs its own `CLAUDE.md` + `ARCHITECTURE.md`:
 - **The habits that came from corrections** are written as rules, each with its reason. The
   reasons matter. Keep them when you edit the rules, since a rule without its "why" tends to get
   argued away under pressure.
-- **Tooling differs.** MCP servers, CLIs and hooks are recommendations; `voice/06` says what each one
-  was for, so you can find an equivalent.
+- **Tooling differs.** MCP servers, CLIs and hooks are recommendations; `voice/06` says what each
+  one was for, so you can find an equivalent.
 
 ## Keeping it generic
 

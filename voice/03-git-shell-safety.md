@@ -19,8 +19,9 @@
   commits. Read the hook's output (the `Tests:` line) before every push. If it failed, fix it
   and commit on top before pushing.
 - **Migrations need a reminder.** When a branch adds or changes database migrations, say so in
-  the PR and in the chat message, and remind the person to run them in each environment they
-  manage. When there are none, write "no migrations to run", so it's never ambiguous.
+  the PR, and put "run the migrations in the environments where they don't run automatically"
+  under "For you to do" in the report.
+  When there are none, write "no migrations" in the PR only.
 - **Commit messages** state what changed and why. Keep the message free of round/ticket noise
   unless the team wants it.
 

@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this
+repository.
 
 ## Repository Overview
 
@@ -16,23 +17,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `project-ui/`     | npm workspaces                      | Shared design-system component library  | localhost playgrounds               |
 | `project-design/` | Static reference                    | Design tokens, fonts, preview HTML      | Claude Design                       |
 
-Each sub-repo has its own `CLAUDE.md` with repo-specific detail, and an `ARCHITECTURE.md` with structural rules and agent constraints. **Read `ARCHITECTURE.md` before writing any new code in a sub-repo.** This root file covers cross-repo conventions only.
+Each sub-repo has its own `CLAUDE.md` with repo-specific detail, and an `ARCHITECTURE.md` with
+structural rules and agent constraints. **Read `ARCHITECTURE.md` before writing any new code in a
+sub-repo.** This root file covers cross-repo conventions only.
 
 ---
 
 ## claude-memory/ — Self-Memory Layer
 
-`claude-memory/` is the cross-repo planning and memory layer for this project. It is **not** a deployable codebase — it is Claude's persistent working memory for the Project: `knowledge/` holds domain rules/facts/hypotheses (routed via its own `INDEX.md`), `plans/` holds the active feature plans as numbered step folders, each with its own `README.md` spec.
+`claude-memory/` is the cross-repo planning and memory layer for this project. It is **not** a
+deployable codebase — it is Claude's persistent working memory for the Project: `knowledge/` holds
+domain rules/facts/hypotheses (routed via its own `INDEX.md`), `plans/` holds the active feature
+plans as numbered step folders, each with its own `README.md` spec.
 
-**Before starting any plan work:** read `claude-memory/plans/INDEX.md` to check step status and dependencies. Each step folder has its own `README.md` with the full spec for that step. **Then check the target step's own folder for the most recent dated report** (a `TECH_REPORT.md`, a `FIXES/` round file, or similar) and read it in full before planning — `INDEX.md` gives status, not the decisions and deviations a prior round already made and reasoned through. Skipping this has directly caused sessions to redo already-settled work and reverse explicit, user-confirmed decisions they never saw recorded.
+**Before starting any plan work:** read `claude-memory/plans/INDEX.md` to check step status and
+dependencies. Each step folder has its own `README.md` with the full spec for that step. **Then
+check the target step's own folder for the most recent dated report** (a `TECH_REPORT.md`, a
+`FIXES/` round file, or similar) and read it in full before planning — `INDEX.md` gives status, not
+the decisions and deviations a prior round already made and reasoned through. Skipping this has
+directly caused sessions to redo already-settled work and reverse explicit, user-confirmed decisions
+they never saw recorded.
 
 ---
 
 ## Verification & Working Discipline
 
-Behaviour rules (verification, primary sources, scope, fix-the-class, voice, git safety) live in
-the user-level voice layer, installed from this kit's `voice/` to `~/.claude/voice/`. Apply them on
-every task; `~/.claude/voice/02-working-discipline.md` has the full list with the reason for each rule.
+Behaviour rules (verification, primary sources, scope, fix-the-class, voice, git safety) live in the
+user-level voice layer, installed from this kit's `voice/` to `~/.claude/voice/`. Apply them on
+every task; `~/.claude/voice/02-working-discipline.md` has the full list with the reason for each
+rule.
 
 ---
 
@@ -40,34 +53,39 @@ every task; `~/.claude/voice/02-working-discipline.md` has the full list with th
 
 Use the per-domain knowledge base in `claude-memory/knowledge/<domain>/` (`knowledge.md`,
 `hypotheses.md`, `rules.md`, routed by `claude-memory/knowledge/INDEX.md`): read the domain's rules
-before a task, write lessons back at the end. Lifecycle and promotion rules: `~/.claude/voice/04-memory-and-knowledge.md`.
+before a task, write lessons back at the end. Lifecycle and promotion rules:
+`~/.claude/voice/04-memory-and-knowledge.md`.
 
 ---
 
 ## API Review
 
-Whenever code in any codebase that touches the API contract changes — new routes, modified response shapes, new client-side consumers — run `/api-review` against the affected endpoint and consumer.
+Whenever code in any codebase that touches the API contract changes — new routes, modified response
+shapes, new client-side consumers — run `/api-review` against the affected endpoint and consumer.
 
-The skill covers: response envelope shape, HTTP verb/status rules, 204 empty-body handling, pagination shape, Bruno collection sync, and JS/Vue consumer alignment.
+The skill covers: response envelope shape, HTTP verb/status rules, 204 empty-body handling,
+pagination shape, Bruno collection sync, and JS/Vue consumer alignment.
 
 Trigger points by codebase:
 - **backend-php**: any new/modified controller, route in `routes/api.php`, or `ApiResponse` usage
-- **public-app**: any new/modified route in `pages/api/v1/`, changes to `helpers/api/api-util.ts`, or page code that destructures API responses
-- **logged-app**: any `src/views/` or `App.vue` code that reads `element`, `collection`, or `pagination` from API data
+- **public-app**: any new/modified route in `pages/api/v1/`, changes to `helpers/api/api-util.ts`,
+  or page code that destructures API responses
+- **logged-app**: any `src/views/` or `App.vue` code that reads `element`, `collection`, or
+  `pagination` from API data
 
 ---
 
 ## Independent product-owner review
 
-Before declaring any **larger** multi-repository implementation complete (new feature,
-multi-file implementation, design-facing change), run an independent product-owner /
-code-quality review with `/po-review-codex` or `/po-review-claude`, whichever the user prefers.
-Both launch `claude-memory/scripts/codex-po-review.sh` and follow `claude-memory/scripts/PO-REVIEW.md`
-(the ≤2,000-char What-asked/Plan/Implementation brief, invariant audit, rounds, visual-fidelity
-gate); the rules and reasons are in `~/.claude/voice/05-review-loop.md`. The preferred reviewer
-falls back once to the other on quota, login failure or a missing CLI. **Small, scoped fixes skip it** (lint/tests
-green is enough). For a large change, ask the user to confirm the plan before running the gate —
-do not self-classify a large change as "small".
+Before declaring any **larger** multi-repository implementation complete (new feature, multi-file
+implementation, design-facing change), run an independent product-owner / code-quality review with
+`/po-review-codex` or `/po-review-claude`, whichever the user prefers. Both launch
+`claude-memory/scripts/codex-po-review.sh` and follow `claude-memory/scripts/PO-REVIEW.md` (the
+≤2,000-char What-asked/Plan/Implementation brief, invariant audit, rounds, visual-fidelity gate);
+the rules and reasons are in `~/.claude/voice/05-review-loop.md`. The preferred reviewer falls back
+once to the other on quota, login failure or a missing CLI. **Small, scoped fixes skip it**
+(lint/tests green is enough). For a large change, ask the user to confirm the plan before running
+the gate — do not self-classify a large change as "small".
 
 ---
 
@@ -75,10 +93,10 @@ do not self-classify a large change as "small".
 
 If the workspace rate-limits any endpoints, keep the approach identical across codebases:
 
-- **Every threshold is an env var**, never a code literal — e.g. `RL_<NAME>="<max>/<seconds>[,<max>/<seconds>]"`.
-  A single `RATE_LIMIT_MULTIPLIER` scales every `max` (e.g. loosen staging), and
-  `RATE_LIMIT_ENABLED=false` disables all limiters (local dev). Changing a limit is a redeploy,
-  not a code edit.
+- **Every threshold is an env var**, never a code literal — e.g.
+  `RL_<NAME>="<max>/<seconds>[,<max>/<seconds>]"`. A single `RATE_LIMIT_MULTIPLIER` scales every
+  `max` (e.g. loosen staging), and `RATE_LIMIT_ENABLED=false` disables all limiters (local dev).
+  Changing a limit is a redeploy, not a code edit.
 - **Keyed per authenticated user, else per client IP.** Non-production honours a
   `X-RateLimit-Bypass: <secret>` header (used by automated tests).
 - **Rejections return the standard error envelope** (status 429) plus `Retry-After` and
@@ -93,7 +111,9 @@ If the workspace rate-limits any endpoints, keep the approach identical across c
 
 ## Playwright Visual Testing
 
-Before any Playwright MCP test against the logged-in Vue SPA, run `/playwright-session` to create a throwaway account, confirm it, log in, and inject the auth cookies into the browser. Without this step, protected routes immediately redirect to login.
+Before any Playwright MCP test against the logged-in Vue SPA, run `/playwright-session` to create a
+throwaway account, confirm it, log in, and inject the auth cookies into the browser. Without this
+step, protected routes immediately redirect to login.
 
 Requires both dev servers running:
 - `localhost:3000` — `public-app` (hosts the auth API)
@@ -177,11 +197,16 @@ Brand colors (canonical values, used across all codebases):
 | CTA / accent | `--brand-opposite` | `#000000` (example) |
 | Fill / accent 2 | `--brand-fill` | `#000000` (example) |
 
-Fonts: **{{Heading font}}** (headings h1–h4), **{{Body font}}** (body/UI), **{{Wordmark font}}** (logo wordmark), **{{Display font}}** (display accent). Served from `fonts.project.app` via Cloudflare Worker (or your own font host).
+Fonts: **{{Heading font}}** (headings h1–h4), **{{Body font}}** (body/UI), **{{Wordmark font}}**
+(logo wordmark), **{{Display font}}** (display accent). Served from `fonts.project.app` via
+Cloudflare Worker (or your own font host).
 
-Icons: pick one icon library and stick to it across every codebase (e.g. `@tabler/icons-vue` / `@tabler/icons-react`) — outline style, consistent stroke width. Never use emoji as icons in the app UI.
+Icons: pick one icon library and stick to it across every codebase (e.g. `@tabler/icons-vue` /
+`@tabler/icons-react`) — outline style, consistent stroke width. Never use emoji as icons in the app
+UI.
 
-Buttons: pick one border-radius convention for the app shell (e.g. `14px`, not pill) and one for the marketing site (e.g. pill). No gradients in production UI unless that's a deliberate brand choice.
+Buttons: pick one border-radius convention for the app shell (e.g. `14px`, not pill) and one for the
+marketing site (e.g. pill). No gradients in production UI unless that's a deliberate brand choice.
 
 ---
 

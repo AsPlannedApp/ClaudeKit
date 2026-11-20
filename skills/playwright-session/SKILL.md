@@ -4,9 +4,12 @@ description: Set up a Playwright auth session for the logged-in Vue SPA. Use bef
 
 # /playwright-session — Project Playwright Auth Setup
 
-Before running any Playwright visual test against the logged-in Vue SPA (`localhost:3001`), you need a valid auth session. This skill creates a throwaway account via the dev API, confirms it, logs in, and injects the resulting tokens into the Playwright browser as cookies.
+Before running any Playwright visual test against the logged-in Vue SPA (`localhost:3001`), you need
+a valid auth session. This skill creates a throwaway account via the dev API, confirms it, logs in,
+and injects the resulting tokens into the Playwright browser as cookies.
 
-This skill is **dev-only** — it depends on `debug.token`/`debug.hash` which the JS API exposes only in non-production environments.
+This skill is **dev-only** — it depends on `debug.token`/`debug.hash` which the JS API exposes only
+in non-production environments.
 
 ---
 
@@ -98,7 +101,10 @@ Expected: HTTP 201. Save `element.accessToken` and `element.refreshToken`:
 
 ## Step 5 — Inject tokens into the Playwright browser
 
-The Vue SPA reads auth from cookies (`accessToken`, `refreshToken`, `deviceId`) on mount and immediately redirects to logout if they are missing or invalid. Cookies **must** be injected at the browser context level **before** navigating to `localhost:3001`, otherwise the redirect fires before any `evaluate` can run.
+The Vue SPA reads auth from cookies (`accessToken`, `refreshToken`, `deviceId`) on mount and
+immediately redirects to logout if they are missing or invalid. Cookies **must** be injected at the
+browser context level **before** navigating to `localhost:3001`, otherwise the redirect fires before
+any `evaluate` can run.
 
 Use `mcp__playwright__browser_run_code_unsafe`:
 
