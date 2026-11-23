@@ -57,13 +57,14 @@
 {{WRONG_PATTERN_EXAMPLE}}
 ```
 
-{{PATTERN_FLOW_SUMMARY}} <!-- e.g. "Flow: FormRequest (validate) → Action (execute) → Resource (format) → ApiResponse (envelope)" -->
+{{PATTERN_FLOW_SUMMARY}} <!-- e.g. "Flow: FormRequest (validate) → Action (execute) → Resource
+(format) → ApiResponse (envelope)" -->
 
 ---
 
 <!-- OPTIONAL: include if there's a second reusable pattern worth codifying (e.g. a Repository
-     pattern, a Service pattern, a composable pattern) — same shape as above, shorter. Repeat as
-     a "## {{PATTERN_2_HEADING}}" section per additional pattern. Delete if one pattern covers it. -->
+     pattern, a Service pattern, a composable pattern) — same shape as above, shorter. Repeat as a
+     "## {{PATTERN_2_HEADING}}" section per additional pattern. Delete if one pattern covers it. -->
 
 ---
 

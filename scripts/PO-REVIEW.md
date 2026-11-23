@@ -1,11 +1,11 @@
 # Independent product-owner review — procedure
 
-Shared by both launcher skills: `po-review-codex` (Codex preferred) and `po-review-claude`
-(Claude preferred); pick one per project or per review. The runner is `scripts/codex-po-review.sh`. The preferred
-reviewer falls back **once** to the other on a provider quota/rate-limit error, a login/auth
-failure, or a missing CLI; `--fallback off` (or `PO_FALLBACK=off`) disables that. Each reviewer
-is a fresh, read-only agent with no shared implementation conversation; a valid verdict from
-either counts fully.
+Shared by both launcher skills: `po-review-codex` (Codex preferred) and `po-review-claude` (Claude
+preferred); pick one per project or per review. The runner is `scripts/codex-po-review.sh`. The
+preferred reviewer falls back **once** to the other on a provider quota/rate-limit error, a
+login/auth failure, or a missing CLI; `--fallback off` (or `PO_FALLBACK=off`) disables that. Each
+reviewer is a fresh, read-only agent with no shared implementation conversation; a valid verdict
+from either counts fully.
 
 ## Size and approval gate
 
@@ -78,16 +78,18 @@ else
 fi
 ```
 
-The entrypoint requires Python 3.9+ (standard library only). The script's own guard rejects empty or >2,000-character briefs. Context is optional for manual
-use; the normal workflow requires it. Include approved product exceptions, tests actually run,
-and material gaps. Do not ask reviewers to read the entire planning history.
+The entrypoint requires Python 3.9+ (standard library only). The script's own guard rejects empty or
+>2,000-character briefs. Context is optional for manual use; the normal workflow requires it.
+Include approved product exceptions, tests actually run, and material gaps. Do not ask reviewers to
+read the entire planning history.
 
-Existing options remain: `--repos a,b`, `--base REF`, `--effort low|medium|high`,
-`--reviewer codex|claude|auto` (preferred reviewer; auto = codex; also `PO_REVIEWER`; `REVIEWER`
-above is the launcher skill's choice), `--fallback on|off` (default on, also `PO_FALLBACK`).
-Repositories without the base
-ref fall back to uncommitted changes with a warning on round 1. For a previously reviewed repository, later rounds reject an unavailable ref or one that does not resolve to its previous reviewed HEAD. Verify first-round fallback warnings are intended.
-`--repos` rejects unknown/duplicate names. Generated files are listed instead of diffed.
+Existing options remain: `--repos a,b`, `--base REF`, `--effort low|medium|high`, `--reviewer
+codex|claude|auto` (preferred reviewer; auto = codex; also `PO_REVIEWER`; `REVIEWER` above is the
+launcher skill's choice), `--fallback on|off` (default on, also `PO_FALLBACK`). Repositories without
+the base ref fall back to uncommitted changes with a warning on round 1. For a previously reviewed
+repository, later rounds reject an unavailable ref or one that does not resolve to its previous
+reviewed HEAD. Verify first-round fallback warnings are intended. `--repos` rejects
+unknown/duplicate names. Generated files are listed instead of diffed.
 
 Other repositories can use the same bounded gate through `CODEX_PO_REPOS` and
 `CODEX_PO_WORKSPACE_ROOT`; do not bypass the timing/session controls with an unbounded direct
@@ -99,13 +101,14 @@ Reviewers sweep **all assigned classes before drilling deeply into one**, and do
 the first blocker. Each finding includes its class, every substantiated instance in the part,
 file:line, concrete input/impact, and severity:
 
-- **P1:** wrong results or data loss on realistic inputs, including concrete user-visible regressions.
+- **P1:** wrong results or data loss on realistic inputs, including concrete user-visible
+  regressions.
 - **P2:** wrong only on rare/exotic inputs, or a guarantee violated without user-visible harm.
 - **P3:** test/documentation gaps.
 
 Strict wording alone does not turn an exotic issue or missing test into P1. Reviewers explicitly
-mark assigned invariants **confirmed**, **violated** (with sites), or **unverifiable** (with reason).
-A violated invariant must also have the appropriately graded finding; inspect unverifiable
+mark assigned invariants **confirmed**, **violated** (with sites), or **unverifiable** (with
+reason). A violated invariant must also have the appropriately graded finding; inspect unverifiable
 entries and do not describe them as verified. An unfinished sweep is incomplete coverage.
 
 The reviewer returns structured JSON; the script prints `DECISION: PASS|FAIL` and concise
@@ -114,8 +117,11 @@ coverage, command errors and timeouts are unsuccessful reviews, never PASS. Code
 is captured separately; echoed prompts or intermediate PASS text cannot approve the change.
 
 P2/P3 automatically accumulate in the run's **`follow-ups.md`**, with source round/log and sites.
-Link this file in the completion report and copy material follow-ups into the task's durable
-tracking notes. Do not loop merely to clear P2/P3. Fix a trivial one if useful, but include that
+Copy material follow-ups into the task's durable tracking notes. In the report to the owner,
+never link this file: a follow-up that needs the owner becomes a "For you to decide" item
+(issue → why → choices), per the voice chapter `01-voice.md` (installed under
+`~/.claude/voice/` or `<project>/.claude/voice/`). Do not loop merely to clear P2/P3. Fix a
+trivial one if useful, but include that
 change in the next required delta; do not silently expand scope.
 
 After **any finding**, name its class and enumerate **all sibling sites**. Fix all P1 instances
@@ -125,7 +131,8 @@ P2/P3, record the sibling audit in follow-ups instead of starting an unnecessary
 There are at most **three rounds per session**, including reviewer-error/timeout rounds.
 Preflight failures without reviewer launch do not consume a round. A successful third round
 passes. An unsuccessful third round prints **ESCALATE**; a fourth invocation refuses to launch
-models. Present unresolved P1s, uncertainty, timings and options to the user. Do not change the
+models. Present each unresolved P1 to the user as a "For you to decide" item with its options;
+mention timings only when they explain the failure. Do not change the
 session ID to evade the cap. User-approved continuation starts a new session and explicitly
 carries forward unresolved findings/context. Explicit risk acceptance is a user decision, not
 a reviewer PASS.
@@ -150,22 +157,32 @@ only for concrete P1 impact. Do not repeatedly run a full-branch “final review
 Unresolved P1s persist even if a repo is omitted from `--repos`; a missing delta cannot erase
 one. Reviewers must provide specific code evidence when resolving a prior P1.
 
-When omitted, the session ID is derived from workspace and configured repository branches,
-not the selected subset or changing base. Prefer explicit task IDs to avoid mixing unrelated
-work on the same branch. Session metadata lives in ignored `scripts/logs/sessions/` and is
-locked against concurrent rounds. Unfinished original scope persists across empty deltas and repository subsets; its base is frozen to a commit SHA. Legacy saved symbolic bases fail preflight: restore their original immutable review base from evidence rather than guessing a moving HEAD. Completed worker findings survive cancellation: the next invocation recovers valid P1/P2/P3 artifacts from interrupted rounds before it can approve a delta.
+When omitted, the session ID is derived from workspace and configured repository branches, not the
+selected subset or changing base. Prefer explicit task IDs to avoid mixing unrelated work on the
+same branch. Session metadata lives in ignored `scripts/logs/sessions/` and is locked against
+concurrent rounds. Unfinished original scope persists across empty deltas and repository subsets;
+its base is frozen to a commit SHA. Legacy saved symbolic bases fail preflight: restore their
+original immutable review base from evidence rather than guessing a moving HEAD. Completed worker
+findings survive cancellation: the next invocation recovers valid P1/P2/P3 artifacts from
+interrupted rounds before it can approve a delta.
 
 ## Hard speed budget
 
 **Every invocation, including round 1, has one ≤180-second wall-clock deadline.** Preparation,
-queueing, parallel reviews, fallback and reporting all share it. `REVIEW_TIMEOUT_SECONDS`
-defaults to 180; higher values are rejected. Review workers stop with five seconds reserved for
-cleanup/reporting. The supervisor terminates process groups and returns timeout status 124; SIGTERM/SIGINT also terminate reviewer groups and record interruption;
-completed part artifacts remain available. An operating-system suspension is outside the
-script's scheduling control; never promise provider completion merely because a timer exists.
+queueing, parallel reviews, fallback and reporting all share it. `REVIEW_TIMEOUT_SECONDS` defaults
+to 180; higher values are rejected. Review workers stop with five seconds reserved for
+cleanup/reporting. The supervisor terminates process groups and returns timeout status 124;
+SIGTERM/SIGINT also terminate reviewer groups and record interruption; completed part artifacts
+remain available. An operating-system suspension is outside the script's scheduling control; never
+promise provider completion merely because a timer exists.
 
-- With an audit, assign each invariant class an explicit owner across whole sibling files, grouping more than five classes into at most five implementation parts per repository. Test files get explicit test parts. This avoids every file reviewer re-auditing every class.
-- Without an audit, pack whole files using a **400-changed-line target**. The same target packs test parts; large files remain intact. Class parts may exceed it to preserve sibling context. Every site remains enumerated in the prompt; long prose evidence is explicitly excerpted with a path to the full sidecar.
+- With an audit, assign each invariant class an explicit owner across whole sibling files, grouping
+  more than five classes into at most five implementation parts per repository. Test files get
+  explicit test parts. This avoids every file reviewer re-auditing every class.
+- Without an audit, pack whole files using a **400-changed-line target**. The same target packs test
+  parts; large files remain intact. Class parts may exceed it to preserve sibling context. Every
+  site remains enumerated in the prompt; long prose evidence is explicitly excerpted with a path to
+  the full sidecar.
 - Default maximum concurrency: **six** (`PO_MAX_PARALLEL`, 1–6). Six is an observed operating
   point, not a guaranteed provider quota. Queue time consumes the same deadline.
 - Diffs and bounded sibling context are attached. Omitted excerpts are named. Reviewers may

@@ -18,8 +18,8 @@ repo-specific detail and win on anything project-specific.
    never call it "small" yourself; ask when unsure which lane it's in.
 2. **Verify against primary sources.** That means live code, the actual design file, the actual
    API response. READMEs, summaries and earlier notes describe the past.
-3. **Report exactly what was tested**, how, and what wasn't. "Done, verified" means every stated
-   scope item was exercised. Anything less gets named as a gap.
+3. **Never overclaim what was tested.** "Done" means every stated scope item was exercised.
+   A gap that matters goes in the report's "What I couldn't do or check" (`01-voice.md`).
 4. **An error you hit while testing is a bug lead**, not friction. Investigate before working
    around it.
 5. **Fix the class, not the instance.** Every finding triggers a search for its sibling sites.
@@ -32,14 +32,13 @@ repo-specific detail and win on anything project-specific.
 9. **Never print secrets.** Compare env files by key name only.
 10. **End every plan by updating memory/knowledge** with what was learned, unless told not to.
 
-## Communication in one paragraph
+## How I report
 
-Lead with the outcome and its state, including what is *not* committed or deployed. Then give
-what changed, what was checked (with counts and the method), what wasn't, and what's left for
-the user, as numbered steps on their go-ahead. Write in plain English with short sentences, use
-`file:line` references, and use tables when they compare things. No hype, no filler, no
-apologies, no "verified" without evidence. Commands for the user to run are short, copyable
-`!` one-liners. Full chapter: `01-voice.md`.
+Every report uses these parts, in this order, and no other headings: **What I did** (state
+first: committed or not) · **What I couldn't do or check** (only what matters) · **Saved for
+you** · **What I'll do next** · **For you to decide** (issue → why → choices) · **For you to
+do**. Empty parts are left out. Plain short sentences, `file:line`, no hype, no asides, no
+promises, no "read this file". Full rules and the owner's example: `01-voice.md`.
 
 ## Chapters
 
